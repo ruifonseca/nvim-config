@@ -594,6 +594,7 @@ require('lazy').setup({
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -605,10 +606,54 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        -- $ npm i -g vscode-langservers-extracted
+        html = {
+          filetypes = {
+            'astro',
+            'css',
+            'eruby',
+            'html',
+            'htmldjango',
+            'javascriptreact',
+            'less',
+            'pug',
+            'sass',
+            'scss',
+            'svelte',
+            'typescriptreact',
+            'vue',
+            'htmlangular',
+          },
+        },
+        -- npm i -g vscode-langservers-extracted
+        cssls = {},
+        -- npm install -g emmet-ls
+        emmet_ls = {},
+        clangd = {},
         -- gopls = {},
-        pyright = {},
-        pylsp = {},
+        -- pyright = {},
+        pylsp = {
+          settings = {
+            pylsp = {
+              plugins = {
+                -- formatter options
+                black = { enabled = true },
+                autopep8 = { enabled = false },
+                yapf = { enabled = false },
+                -- linter options
+                pylint = { enabled = true, executable = 'pylint' },
+                pyflakes = { enabled = false },
+                pycodestyle = { enabled = false },
+                -- type checker
+                pylsp_mypy = { enabled = true },
+                -- auto-completion options
+                jedi_completion = { fuzzy = true },
+                -- import sorting
+                pyls_isort = { enabled = true },
+              },
+            },
+          },
+        },
         rust_analyzer = {},
         ruby_lsp = {},
         rubocop = {},
@@ -635,6 +680,7 @@ require('lazy').setup({
             },
           },
         },
+        ts_ls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -704,9 +750,11 @@ require('lazy').setup({
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         python = { 'isort', 'black' },
+        css = { 'css', 'prettierd', 'prettier', stop_after_first = true },
+        scss = { 'prettierd', 'prettier', stop_after_first = true },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
@@ -832,13 +880,15 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
+    'xero/miasma.nvim',
+    -- 'nanotech/jellybeans.vim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.colorscheme 'miasma'
+      -- vim.cmd.colorscheme 'jellybeans'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
@@ -891,7 +941,21 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'python', 'ruby' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'python',
+        'ruby',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
