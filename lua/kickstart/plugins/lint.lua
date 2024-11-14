@@ -8,7 +8,7 @@ return {
       lint.linters_by_ft = {
         -- $ npm install -g markdownlint-cli
         markdown = { 'markdownlint' },
-        python = { 'flake8' },
+        -- python = { 'flake8' },
         ruby = { 'rubocop' },
       }
 
