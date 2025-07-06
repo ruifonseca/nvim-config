@@ -794,6 +794,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         python = { 'ruff' },
+        ruby = { 'rubocop' },
         css = { 'prettier' },
         scss = { 'prettier' },
         html = { 'prettier' },
